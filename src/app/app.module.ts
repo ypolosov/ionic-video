@@ -5,11 +5,11 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import {VgCoreModule} from "videogular2/core";
 import {VgOverlayPlayModule} from "videogular2/overlay-play";
 import {VgControlsModule} from "videogular2/controls";
-import {VgCoreModule} from "videogular2/core";
-import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
