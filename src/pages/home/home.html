@@ -6,68 +6,6 @@
 
 <ion-content padding>
 
-  <vg-player (onPlayerReady)="onPlayerReady($event)">
-    <vg-overlay-play></vg-overlay-play>
 
-    <vg-controls *ngIf="!controls" [autohide]="true" [autohide-time]="1.5">
-      <vg-play-pause></vg-play-pause>
-      <vg-playback-button></vg-playback-button>
-
-      <vg-time-display property="current" format="mm:ss"></vg-time-display>
-
-      <vg-scrub-bar>
-        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-      </vg-scrub-bar>
-
-      <vg-time-display property="left" format="mm:ss"></vg-time-display>
-      <vg-time-display property="total" format="mm:ss"></vg-time-display>
-
-      <vg-track-selector></vg-track-selector>
-      <vg-mute></vg-mute>
-
-      <vg-fullscreen></vg-fullscreen>
-    </vg-controls>
-
-    <video vg-media id="singleVideo" preload="auto" [controls]="controls" crossorigin>
-      <source *ngFor="let video of sources" [src]="video.src" [type]="video.type">
-      <track #subtitleTrack
-             [kind]="track['kind']"
-             [label]="track['label']"
-             [src]="track['src']"
-             [srclang]="track['srclang']"
-             [default]="track['default']"
-             vgCuePoints
-             (onEnterCuePoint)="onEnterCuePoint($event)"
-             (onExitCuePoint)="onExitCuePoint($event)">
-    </video>
-  </vg-player>
-
-  <div style="height: 100px;">
-    <div>
-      <button type="button" (click)="api.play()">Play</button>
-      <button type="button" (click)="api.pause()">Pause</button>
-      <button type="button" (click)="api.currentTime = 50">Seek to second 50</button>
-    </div>
-    <div>
-      <label for="nativeControls">Native Controls</label>
-      <input #nativeControls id="nativeControls" type="checkbox" (change)="controls = nativeControls.checked">
-    </div>
-    <div>
-      <label for="nativeFullscreen">Native Fullscreen</label>
-      <input #nativeFullscreen id="nativeFullscreen" type="checkbox" [(ngModel)]="fsAPI['nativeFullscreen']">
-    </div>
-    <div>
-      <label>{{ 'Current time: ' + api?.time?.current}}</label>
-    </div>
-    <div>
-      <ul>
-        <li *ngFor="let cue of subtitleTrack.cues"
-            (click)="onCueClick(cue)">
-          <div class="start-time">{{cue.startTime}}</div><div class="end-time">{{cue.endTime}}</div><div class="text">{{cue.text}}</div>
-        </li>
-      </ul>
-    </div>
-  </div>
 
 </ion-content>
