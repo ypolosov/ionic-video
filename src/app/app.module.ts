@@ -10,6 +10,7 @@ import {VgOverlayPlayModule} from "videogular2/overlay-play";
 import {VgControlsModule} from "videogular2/controls";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import {WebSpeechApiModule} from "../web-speech-api";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {CommonModule} from "@angular/common";
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    WebSpeechApiModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
