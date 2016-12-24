@@ -1,11 +1,22 @@
 import {Injectable} from '@angular/core';
 import {WebSpeechApi} from "./web-speech-api";
-
+import {Observable} from "rxjs";
 
 @Injectable()
 export class WebSpeechApiService implements WebSpeechApi {
   
   private recognition: SpeechRecognition = new webkitSpeechRecognition();
+  private startSource: Observable<Event> = Observable.fromEvent(this.recognition, 'start');
+  private endSource: Observable<Event> = Observable.fromEvent(this.recognition, 'end');
+  private resultSource: Observable<SpeechRecognitionEvent> = Observable.fromEvent(this.recognition, 'result');
+  private errorSource: Observable<SpeechRecognitionError> = Observable.fromEvent(this.recognition, 'error');
+  private noMatchSource: Observable<SpeechRecognitionEvent> = Observable.fromEvent(this.recognition, 'nomatch');
+  private audioStartSource: Observable<Event> = Observable.fromEvent(this.recognition, 'audiostart');
+  private soundStartSource: Observable<Event> = Observable.fromEvent(this.recognition, 'soundstart');
+  private speechStartSource: Observable<Event> = Observable.fromEvent(this.recognition, 'speechstart');
+  private speechEndSource: Observable<Event> = Observable.fromEvent(this.recognition, 'speechend');
+  private soundEndSource: Observable<Event> = Observable.fromEvent(this.recognition, 'soundend');
+
   
   constructor() {
     
@@ -31,82 +42,52 @@ export class WebSpeechApiService implements WebSpeechApi {
   }
   
   subscribeStartEventHandler(
-    context: any,
     handler: (event: Event) => void): void {
-    this.recognition.onstart = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.startSource.subscribe(handler);
   }
   
   subscribeEndEventHandler(
-    context: any,
     handler: (event: Event) => void): void {
-    this.recognition.onend = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.endSource.subscribe(handler);
   }
   
   subscribeResultEventHandler(
-    context: any,
     handler: (event: SpeechRecognitionEvent) => void): void {
-    this.recognition.onresult = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.resultSource.subscribe(handler);
   }
   
   subscribeErrorEventHandler(
-    context: any,
     handler: (event: SpeechRecognitionError) => void): void {
-    this.recognition.onerror = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.errorSource.subscribe(handler);
   }
   
   subscribeNoMatchEventHandler(
-    context: any,
     handler: (event: SpeechRecognitionEvent) => void): void {
-    this.recognition.onnomatch = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.noMatchSource.subscribe(handler);
   }
   
   subscribeAudioStartEventHandler(
-    context: any,
     handler: (event: Event) => void): void {
-    this.recognition.onaudiostart = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.audioStartSource.subscribe(handler);
   }
   
   subscribeSoundStartEventHandler(
-    context: any,
     handler: (event: Event) => void): void {
-    this.recognition.onsoundstart = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.soundStartSource.subscribe(handler);
   }
   
   subscribeSpeechStartEventHandler(
-    context: any,
     handler: (event: Event) => void): void {
-    this.recognition.onspeechstart = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.speechStartSource.subscribe(handler);
   }
   
   subscribeSpeechEndEventHandler(
-    context: any,
     handler: (event: Event) => void): void {
-    this.recognition.onspeechend = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.speechEndSource.subscribe(handler);
   }
   
   subscribeSoundEndEventHandler(
-    context: any,
     handler: (event: Event) => void): void {
-    this.recognition.onsoundend = (event: Event) => {
-      handler.call(context, event);
-    };
+    this.soundEndSource.subscribe(handler);
   }
 }

@@ -6,24 +6,24 @@ export interface WebSpeechApi {
   
   abort(): void;
   
-  subscribeStartEventHandler(context: any, handler: (event: Event) => void): void;
+  subscribeStartEventHandler(handler: (event: Event) => void): void;
   
-  subscribeEndEventHandler(context: any, handler: (event: Event) => void): void;
+  subscribeEndEventHandler(handler: (event: Event) => void): void;
   
-  subscribeResultEventHandler(context: any, handler: (event: SpeechRecognitionEvent) => void): void;
+  subscribeResultEventHandler(handler: (event: SpeechRecognitionEvent) => void): void;
   
-  subscribeErrorEventHandler(context: any, handler: (event: SpeechRecognitionError) => void): void;
+  subscribeErrorEventHandler(handler: (event: SpeechRecognitionError) => void): void;
   
-  subscribeNoMatchEventHandler(context: any, handler: (event: SpeechRecognitionEvent) => void): void;
+  subscribeNoMatchEventHandler(handler: (event: SpeechRecognitionEvent) => void): void;
   
-  subscribeAudioStartEventHandler(context: any, handler: (event: Event) => void): void;
+  subscribeAudioStartEventHandler(handler: (event: Event) => void): void;
   
-  subscribeSoundStartEventHandler(context: any, handler: (event: Event) => void): void;
+  subscribeSoundStartEventHandler(handler: (event: Event) => void): void;
   
-  subscribeSpeechStartEventHandler(context: any, handler: (event: Event) => void): void;
+  subscribeSpeechStartEventHandler(handler: (event: Event) => void): void;
   
-  subscribeSpeechEndEventHandler(context: any, handler: (event: Event) => void): void;
+  subscribeSpeechEndEventHandler(handler: (event: Event) => void): void;
   
-  subscribeSoundEndEventHandler(context: any, handler: (event: Event) => void): void;
+  subscribeSoundEndEventHandler(handler: (event: Event) => void): void;
   
 }
