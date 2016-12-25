@@ -6,6 +6,6 @@ export class WebSpeechApiResultModel {
   }
   
   toString(): string{
-    return `${this.isFinal?"final":"middle"} result: ${this.words.join(" ").toUpperCase()}`;
+    return `${(this.isFinal?"final":"middle")} result: ${this.words.join(" ").toUpperCase()}`;
   }
 }

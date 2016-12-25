@@ -35,6 +35,21 @@ export class WebSpeechApiComponent implements OnInit {
     this.webSpeechApiService.subscribeNoMatchEventHandler((event) => {
       this.onNoMatchEventHander(event)
     });
+    this.webSpeechApiService.subscribeAudioStartEventHandler((event) => {
+      this.onAudioStartEventHander(event)
+    });
+    this.webSpeechApiService.subscribeSoundStartEventHandler((event) => {
+      this.onSoundStartEventHander(event)
+    });
+    this.webSpeechApiService.subscribeSpeechStartEventHandler((event) => {
+      this.onSpeechStartEventHander(event)
+    });
+    this.webSpeechApiService.subscribeSpeechEndEventHandler((event) => {
+      this.onSpeechEndEventHander(event)
+    });
+    this.webSpeechApiService.subscribeSoundEndEventHandler((event) => {
+      this.onSoundEndEventHander(event)
+    });
     
   }
   
@@ -84,11 +99,12 @@ export class WebSpeechApiComponent implements OnInit {
   }
   
   onResultEventHander(event: SpeechRecognitionEvent): void {
-    
+  
+    // let isFinal: boolean = false;
     let resultList: SpeechRecognitionResultList = event.results;
     for(let i = 0; i < resultList.length; i++) {
       let r: SpeechRecognitionResult = resultList[i];
-      let isFinal: boolean = r.isFinal;
+      let isFinal = r.isFinal;
       for(let j = 0; j < r.length; j++) {
         let alt: SpeechRecognitionAlternative = r[j];
         let words: Array<string> = alt.transcript.split(" ");
@@ -96,13 +112,34 @@ export class WebSpeechApiComponent implements OnInit {
         console.log(`${i}-${j}: ${this.model.result}`);
         this.modelChange.next(this.model);
       }
-      if(isFinal) {
-        this.stop();
-      }
     }
+    // if(isFinal) {
+    //   this.stop();
+    // }
   }
   
   onNoMatchEventHander(event: SpeechRecognitionEvent): void {
     console.log("nomatch");
+  }
+  
+  onAudioStartEventHander(event: Event): void {
+    console.log("audiostart");
+  }
+  
+  onSoundStartEventHander(event: Event): void {
+    console.log("soundstart");
+  }
+  
+  onSpeechStartEventHander(event: Event): void {
+    console.log("speechstart");
+  }
+  
+  onSpeechEndEventHander(event: Event): void {
+    console.log("speechend");
+    this.stop();
+  }
+  
+  onSoundEndEventHander(event: Event): void {
+    console.log("soundend");
   }
 }

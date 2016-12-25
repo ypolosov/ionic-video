@@ -1,7 +1,7 @@
 import {RecognizedSentenceModel} from "../recognized-sentence";
 
 export class TextRecognizerModel {
-  constructor(public sentence: RecognizedSentenceModel) {
+  constructor(public sentence: RecognizedSentenceModel = new RecognizedSentenceModel()) {
     
   }
   

@@ -19,8 +19,10 @@ export class WebSpeechApiService implements WebSpeechApi {
 
   
   constructor() {
-    
-    // this.recognition.grammars = new SpeechGrammarList();
+    // let grammar = '#JSGF V1.0; grammar phrase; public <phrase> = is there anybody in this room;';
+    // let speechRecognitionList: SpeechGrammarList = new webkitSpeechGrammarList();
+    // speechRecognitionList.addFromString(grammar, 1);
+    // this.recognition.grammars = speechRecognitionList;
     this.recognition.lang = 'en-US';
     this.recognition.continuous = true;
     this.recognition.interimResults = true;

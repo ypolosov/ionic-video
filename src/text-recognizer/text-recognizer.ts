@@ -1,4 +1,3 @@
-import {RecognizedSentence} from "./model/recognized-sentence";
 
 export interface TextRecognizer {
   

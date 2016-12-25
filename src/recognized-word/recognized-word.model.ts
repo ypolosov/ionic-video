@@ -1,5 +1,5 @@
 export class RecognizedWordModel {
-  constructor(public value: string) {
+  constructor(public value: string = "") {
     
   }
   

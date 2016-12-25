@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 // import {VgAPI, VgFullscreenAPI} from "videogular2/core";
 import {NavController} from 'ionic-angular';
-import {TextRecognizer} from "../../text-recognizer";
 import {HomeModel} from "./home.model";
 
 @Component({
