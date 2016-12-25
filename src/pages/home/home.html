@@ -48,18 +48,16 @@
 
   <div>
     <web-speech-api
-      [(isRecognizing)]="isRecognizing"
-      [(recognizedSentence)]="recognizedSentence">
-
+      [(model)]="model.webSpeechApi">
     </web-speech-api>
   </div>
-  <div>
-    <text-recognizer
-      [isRecognizing]="isRecognizing"
-      [recognizedSentence]="recognizedSentence">
+  {{model.webSpeechApi}}
+  <!--<div>-->
+    <!--<text-recognizer-->
+      <!--[model]="model.textRecognizer">-->
 
-    </text-recognizer>
-  </div>
+    <!--</text-recognizer>-->
+  <!--</div>-->
 
   <!--<div class="ver-scroll">-->
   <!--<div>-->

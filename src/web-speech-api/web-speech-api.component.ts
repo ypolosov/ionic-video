@@ -1,7 +1,7 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {WebSpeechApiService} from "./web-speech-api.service";
-import {RecognizedSentence} from "../text-recognizer/model/recognized-sentence";
-import {RecognizedWord} from "../text-recognizer/model/recognized-word";
+import {WebSpeechApiModel} from "./web-speech-api.model";
+import {WebSpeechApiResultModel} from "./web-speech-api-result.model";
 
 @Component({
              selector: 'web-speech-api',
@@ -10,16 +10,10 @@ import {RecognizedWord} from "../text-recognizer/model/recognized-word";
 export class WebSpeechApiComponent implements OnInit {
   
   @Input()
-  isRecognizing: boolean;
+  model: WebSpeechApiModel = new WebSpeechApiModel();
   
   @Output()
-  isRecognizingChange: EventEmitter<boolean> = new EventEmitter();
-  
-  @Input()
-  recognizedSentence: RecognizedSentence;
-  
-  @Output()
-  recognizedSentenceChange: EventEmitter<RecognizedSentence> = new EventEmitter();
+  modelChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
   
   private
   
@@ -50,17 +44,19 @@ export class WebSpeechApiComponent implements OnInit {
   
   start() {
     this.webSpeechApiService.start();
-    this.isRecognizing = true;
+    this.model.isProcessing = true;
+    this.modelChange.next(this.model);
   }
   
   stop() {
     this.webSpeechApiService.stop();
-    this.isRecognizing = false;
+    this.model.isProcessing = false;
+    this.modelChange.next(this.model);
   }
   
   onClickButton(event: Event): void {
     event.preventDefault();
-    if(!this.isRecognizing) {
+    if(!this.model.isProcessing) {
       this.start();
     } else {
       this.stop();
@@ -68,37 +64,40 @@ export class WebSpeechApiComponent implements OnInit {
   }
   
   onStartEventHander(event: Event): void {
-    this.isRecognizingChange.next(true);
-    this.recognizedSentence = new RecognizedSentence([], false);
-    this.recognizedSentenceChange.next(this.recognizedSentence);
     console.log("start");
+    this.model.result = new WebSpeechApiResultModel([], false);
+    this.model.isProcessing = true;
+    this.modelChange.next(this.model);
   }
   
   onEndEventHander(event: Event): void {
-    this.isRecognizingChange.next(false);
-    this.recognizedSentence = new RecognizedSentence([], false);
-    this.recognizedSentenceChange.next(this.recognizedSentence);
     console.log("end");
+    this.model.isProcessing = false;
+    this.modelChange.next(this.model);
   }
   
   onErrorEventHander(event: SpeechRecognitionError): void {
     console.log("error");
+    this.model.result = new WebSpeechApiResultModel([], false);
+    this.model.isProcessing = false;
+    this.modelChange.next(this.model);
   }
   
   onResultEventHander(event: SpeechRecognitionEvent): void {
     
     let resultList: SpeechRecognitionResultList = event.results;
     for(let i = 0; i < resultList.length; i++) {
-      let result: SpeechRecognitionResult = resultList[i];
-      let isFinal: boolean = result.isFinal;
-      for(let j = 0; j < result.length; j++) {
-        let alt: SpeechRecognitionAlternative = result[j];
-        let words: Array<RecognizedWord> = alt.transcript.split(" ")
-                                              .map((word: string) => {
-                                                return new RecognizedWord(word);
-                                              });
-        this.recognizedSentence = new RecognizedSentence(words, isFinal);
-        this.recognizedSentenceChange.next(this.recognizedSentence);
+      let r: SpeechRecognitionResult = resultList[i];
+      let isFinal: boolean = r.isFinal;
+      for(let j = 0; j < r.length; j++) {
+        let alt: SpeechRecognitionAlternative = r[j];
+        let words: Array<string> = alt.transcript.split(" ");
+        this.model.result = new WebSpeechApiResultModel(words, isFinal);
+        console.log(`${i}-${j}: ${this.model.result}`);
+        this.modelChange.next(this.model);
+      }
+      if(isFinal) {
+        this.stop();
       }
     }
   }

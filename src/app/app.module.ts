@@ -11,7 +11,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 // import {FormsModule} from "@angular/forms";
 // import {CommonModule} from "@angular/common";
 import {WebSpeechApiModule} from "../web-speech-api";
-import {TextRecognizerModule} from "../text-recognizer";
+// import {TextRecognizerModule} from "../text-recognizer";
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import {TextRecognizerModule} from "../text-recognizer";
     // VgOverlayPlayModule,
     IonicModule.forRoot(MyApp),
     WebSpeechApiModule,
-    TextRecognizerModule
+    // TextRecognizerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,3 +1,4 @@
-<button (click)="onClickButton($event)">
+<button [ngClass]="{'recognition-on': model.isProcessing}"
+        (click)="onClickButton($event)">
   <img src="assets/icon/mic.gif">
 </button>

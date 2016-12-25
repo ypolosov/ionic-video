@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {TextRecognizer} from "./text-recognizer";
+import {RecognizedSentence} from "./recognized-sentence";
 
 @Injectable()
-export class TextRecognizerService implements TextRecognizer {
+export class  RecognizedSentenceService implements  RecognizedSentence {
   
   // private recognizedSentenceSubject: Subject<RecognizedSentence> = new Subject<RecognizedSentence>();
   

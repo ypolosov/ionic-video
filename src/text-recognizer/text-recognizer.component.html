@@ -1,6 +1,4 @@
-<div [ngClass]="{'is-final': recognizedSentence.isFinal}">
-  <div *ngFor="let recognizedWord of recognizedSentence.words">
-    {{recognizedWord}}
-  </div>
-</div>
+<recognized-sentence [recognizedSentence]="model.recognizedSentence">
+
+</recognized-sentence>
 

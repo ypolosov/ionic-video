@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 // import {VgAPI, VgFullscreenAPI} from "videogular2/core";
 import {NavController} from 'ionic-angular';
-import {RecognizedSentence} from "../../text-recognizer";
+import {TextRecognizer} from "../../text-recognizer";
+import {HomeModel} from "./home.model";
 
 @Component({
              selector: 'page-home',
@@ -9,8 +10,7 @@ import {RecognizedSentence} from "../../text-recognizer";
            })
 export class HomePage {
   
-  isRecognizing: boolean = false;
-  recognizedSentence: RecognizedSentence = new RecognizedSentence([], true);
+  model: HomeModel = new HomeModel();
   //
   // sources: Array<Object>;
   // track: Object;

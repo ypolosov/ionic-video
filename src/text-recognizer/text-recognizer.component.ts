@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {TextRecognizerService} from "./text-recognizer.service";
-import {RecognizedSentence} from "./model/recognized-sentence";
+import {TextRecognizerModel} from "./text-recognizer.model";
 
 @Component({
              selector: 'text-recognizer',
@@ -9,10 +9,7 @@ import {RecognizedSentence} from "./model/recognized-sentence";
 export class TextRecognizerComponent implements OnInit {
   
   @Input()
-  isRecognizing: boolean;
-  
-  @Input()
-  recognizedSentence: RecognizedSentence;
+  model: TextRecognizerModel;
   
   constructor(
     private textRecognizerService: TextRecognizerService) {
