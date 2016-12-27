@@ -48,14 +48,16 @@
 
   <div>
     <web-speech-api
-      [(model)]="model.webSpeechApi">
+      [model]="model.webSpeechApi"
+      (resultChange)="onResultChanged($event)"
+      (isProcessingChange)="onIsProcessingChanged($event)">
     </web-speech-api>
   </div>
-  <!--<div>-->
-    <!--<text-recognizer-->
-      <!--[(model)]="model.textRecognizer">-->
-    <!--</text-recognizer>-->
-  <!--</div>-->
+  <div>
+    <text-recognizer
+      [model]="model.textRecognizer">
+    </text-recognizer>
+  </div>
 
   <!--<div class="ver-scroll">-->
   <!--<div>-->

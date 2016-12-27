@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RecognizedSentence} from "./recognized-sentence";
 
+
 @Injectable()
 export class  RecognizedSentenceService implements  RecognizedSentence {
   
@@ -17,5 +18,7 @@ export class  RecognizedSentenceService implements  RecognizedSentence {
   // nextValue(recognizedSentence: RecognizedSentence): void{
   //   this.recognizedSentenceSubject.next(recognizedSentence);
   // }
+  
+
   
 }

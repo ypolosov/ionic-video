@@ -4,12 +4,16 @@ export class RecognizedSentenceModel {
   
   constructor(
     public words: Array<RecognizedWordModel> = [],
-    public isFinal: boolean = false) {
+    public isLast: boolean = false) {
     
   }
   
-  toString(): string{
-    return `${this.words.join(" ")}`;
+  static create(words: Array<RecognizedWordModel>, isLast: boolean): RecognizedSentenceModel {
+    return new RecognizedSentenceModel(words, isLast);
+  }
+  
+  toString(): string {
+    return JSON.stringify(this, null, "-----");
   }
   
 }

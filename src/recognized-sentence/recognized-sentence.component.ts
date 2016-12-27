@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {RecognizedSentenceService} from "./recognized-sentence.service";
 import {RecognizedSentenceModel} from "./recognized-sentence.model";
 
@@ -11,9 +11,6 @@ export class  RecognizedSentenceComponent implements OnInit {
   @Input()
   model: RecognizedSentenceModel = new RecognizedSentenceModel();
   
-  @Output()
-  modelChange: EventEmitter<RecognizedSentenceModel> = new EventEmitter();
-  
   constructor(
     private  recognizedSentenceService:  RecognizedSentenceService) {
     
@@ -22,6 +19,8 @@ export class  RecognizedSentenceComponent implements OnInit {
     // });
     
   }
+  
+
   
   ngOnInit() {
     

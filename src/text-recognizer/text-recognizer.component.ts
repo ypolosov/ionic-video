@@ -1,18 +1,16 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {TextRecognizerService} from "./text-recognizer.service";
 import {TextRecognizerModel} from "./text-recognizer.model";
+import {RecognizedSentenceModel} from "../recognized-sentence/recognized-sentence.model";
 
 @Component({
              selector: 'text-recognizer',
              templateUrl: 'text-recognizer.component.html'
            })
-export class TextRecognizerComponent implements OnInit {
+export class TextRecognizerComponent implements OnInit, OnChanges {
   
   @Input()
   model: TextRecognizerModel = new TextRecognizerModel();
-  
-  @Output()
-  modelChange: EventEmitter<TextRecognizerModel> = new EventEmitter();
   
   constructor(
     private textRecognizerService: TextRecognizerService) {
@@ -25,6 +23,11 @@ export class TextRecognizerComponent implements OnInit {
   
   ngOnInit() {
     
+  }
+  
+  ngOnChanges(changes: SimpleChanges) {
+    let sentence: RecognizedSentenceModel = this.textRecognizerService.recognizeSentence(this.model);
+    this.model.sentence = sentence;
   }
   
   // onTextChangeEventHandler(recognizedSentence: RecognizedSentence): void {

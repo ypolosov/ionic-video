@@ -1,7 +1,5 @@
-<div class="sentence"
-     [ngClass]="{'final-recognized-sentence': model.isFinal,
-      'processed-recognized-sentence': !model.isFinal}">
-  <recognized-word *ngFor="let word of model.words"
+<div class="sentence">
+  <recognized-word *ngFor=" let word of model.words"
                    class='word'
                    [model]="word">
   </recognized-word>

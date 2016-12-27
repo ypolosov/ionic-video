@@ -1,15 +1,23 @@
-//.final-recognized-word {
-//  background-color: #f1f1f1;
-//  color: green;
-//}
-//
-//.processed-recognized-word {
-//  background-color: #ffffff;
-//  color: red;
-//}
+.initial-word {
+  color: lightgray;
+}
+
+.recognizable-word {
+  color: blue;
+}
+
+.well-recognized-word{
+  color: green;
+}
+
+.unrecognized-word {
+  color: red;
+}
+
+
 
 .word {
   float: left;
   margin: .2em;
-  font-size: 4em;
+  font-size: 2em;
 }

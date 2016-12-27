@@ -1,5 +1,11 @@
 <div class='word'>
-  {{model.value}}
+  <div
+    [ngClass]="{'initial-word': !model.isLast && !model.candidate,
+     'recognizable-word': !model.isLast && model.candidate && model.sample == model.candidate,
+     'well-recognized-word': model.isLast && model.candidate && model.sample == model.candidate,
+     'unrecognized-word': model.isLast && !model.candidate}">
+    {{model.sample}}
+  </div>
 </div>
 
 

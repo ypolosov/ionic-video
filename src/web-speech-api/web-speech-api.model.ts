@@ -8,6 +8,6 @@ export class WebSpeechApiModel {
   }
   
   toString(): string{
-    return JSON.stringify(this);
+    return JSON.stringify( this, null, "-----" );
   }
 }

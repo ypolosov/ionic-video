@@ -13,9 +13,12 @@ export class WebSpeechApiComponent implements OnInit {
   model: WebSpeechApiModel = new WebSpeechApiModel();
   
   @Output()
-  modelChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
+  resultChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
   
-  private
+  @Output()
+  isProcessingChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
+  
+  private timeoutId: number = 0;
   
   constructor(
     private webSpeechApiService: WebSpeechApiService) {
@@ -58,15 +61,17 @@ export class WebSpeechApiComponent implements OnInit {
   }
   
   start() {
+    this.startTimeout();
     this.webSpeechApiService.start();
     this.model.isProcessing = true;
-    this.modelChange.next(this.model);
+    this.isProcessingChange.next(this.model);
   }
   
   stop() {
+    this.stopTimeout();
     this.webSpeechApiService.stop();
     this.model.isProcessing = false;
-    this.modelChange.next(this.model);
+    this.isProcessingChange.next(this.model);
   }
   
   onClickButton(event: Event): void {
@@ -81,39 +86,44 @@ export class WebSpeechApiComponent implements OnInit {
   onStartEventHander(event: Event): void {
     console.log("start");
     this.model.result = new WebSpeechApiResultModel([], false);
+    this.resultChange.next(this.model);
     this.model.isProcessing = true;
-    this.modelChange.next(this.model);
+    this.isProcessingChange.next(this.model);
   }
   
   onEndEventHander(event: Event): void {
     console.log("end");
     this.model.isProcessing = false;
-    this.modelChange.next(this.model);
+    this.isProcessingChange.next(this.model);
   }
   
   onErrorEventHander(event: SpeechRecognitionError): void {
     console.log("error");
     this.model.result = new WebSpeechApiResultModel([], false);
+    this.resultChange.next(this.model);
     this.model.isProcessing = false;
-    this.modelChange.next(this.model);
+    this.isProcessingChange.next(this.model);
   }
   
   onResultEventHander(event: SpeechRecognitionEvent): void {
-  
-    // let isFinal: boolean = false;
+    this.stopTimeout();
+    this.startTimeout();
+    
+    // let isLast: boolean = false;
     let resultList: SpeechRecognitionResultList = event.results;
     for(let i = 0; i < resultList.length; i++) {
       let r: SpeechRecognitionResult = resultList[i];
-      let isFinal = r.isFinal;
-      for(let j = 0; j < r.length; j++) {
-        let alt: SpeechRecognitionAlternative = r[j];
-        let words: Array<string> = alt.transcript.split(" ");
-        this.model.result = new WebSpeechApiResultModel(words, isFinal);
-        console.log(`${i}-${j}: ${this.model.result}`);
-        this.modelChange.next(this.model);
-      }
+      // for(let j = 0; j < r.length; j++) {
+      let j = 0;
+      let alt: SpeechRecognitionAlternative = r[j];
+      let words: Array<string> = alt.transcript.split(" ");
+      // isLast = (r.isFinal && j == r.length - 1);
+      this.model.result = new WebSpeechApiResultModel(words, false);
+      console.log(`${i}-${j}: ${this.model.result}`);
+      this.resultChange.next(this.model);
+      // }
     }
-    // if(isFinal) {
+    // if(isLast) {
     //   this.stop();
     // }
   }
@@ -136,10 +146,29 @@ export class WebSpeechApiComponent implements OnInit {
   
   onSpeechEndEventHander(event: Event): void {
     console.log("speechend");
-    this.stop();
+    this.makeLastResult();
   }
   
   onSoundEndEventHander(event: Event): void {
     console.log("soundend");
+  }
+  
+  makeLastResult(): void {
+    this.model.result = new WebSpeechApiResultModel(this.model.result.words, true);
+    console.log(`LAST: ${this.model.result}`);
+    this.resultChange.next(this.model);
+  }
+  
+  private startTimeout() {
+    console.log("start timeout");
+    this.timeoutId = setTimeout(() => {
+      console.log("run timeout");
+      this.stop();
+    }, 3000);
+  }
+  
+  private stopTimeout() {
+    console.log("stop timeout");
+    clearTimeout(this.timeoutId);
   }
 }

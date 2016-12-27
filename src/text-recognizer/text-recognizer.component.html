@@ -1,4 +1,6 @@
-<recognized-sentence [(model)]="model.sentence">
+<recognized-sentence [model]="model.sentence"
+                     [ngClass]="{'final-recognized-sentence': model.isLast,
+      'processed-recognized-sentence': !model.isLast}">
 
 </recognized-sentence>
 

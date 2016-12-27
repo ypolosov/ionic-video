@@ -1,9 +1,19 @@
 export class RecognizedWordModel {
-  constructor(public value: string = "") {
+  constructor(
+    public sample: string = "",
+    public candidate: string = "",
+    public isLast: boolean = false) {
     
   }
   
-  toString(): string{
-    return this.value;
+  static create(
+    sample: string,
+    candidate: string,
+    isLast: boolean): RecognizedWordModel {
+    return new RecognizedWordModel(sample, candidate, isLast);
+  }
+  
+  toString(): string {
+    return JSON.stringify(this, null, "-----");
   }
 }
