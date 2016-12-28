@@ -16,96 +16,120 @@ export class WebSpeechApiComponent implements OnInit {
   resultChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
   
   @Output()
-  isProcessingChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
+  isRecognitionProcessingChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
+  
+  @Output()
+  isSynthesisProcessingChange: EventEmitter<WebSpeechApiModel> = new EventEmitter();
   
   private timeoutId: number = 0;
   
   constructor(
     private webSpeechApiService: WebSpeechApiService) {
     
-    this.webSpeechApiService.subscribeStartEventHandler((event) => {
-      this.onStartEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionStartEventHandler((event) => {
+      this.onRecognitionStartEventHander(event)
     });
-    this.webSpeechApiService.subscribeEndEventHandler((event) => {
-      this.onEndEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionEndEventHandler((event) => {
+      this.onRecognitionEndEventHander(event)
     });
-    this.webSpeechApiService.subscribeErrorEventHandler((event) => {
-      this.onErrorEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionErrorEventHandler((event) => {
+      this.onRecognitionErrorEventHander(event)
     });
-    this.webSpeechApiService.subscribeResultEventHandler((event) => {
-      this.onResultEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionResultEventHandler((event) => {
+      this.onRecognitionResultEventHander(event)
     });
-    this.webSpeechApiService.subscribeNoMatchEventHandler((event) => {
-      this.onNoMatchEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionNoMatchEventHandler((event) => {
+      this.onRecognitionNoMatchEventHander(event)
     });
-    this.webSpeechApiService.subscribeAudioStartEventHandler((event) => {
-      this.onAudioStartEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionAudioStartEventHandler((event) => {
+      this.onRecognitionAudioStartEventHander(event)
     });
-    this.webSpeechApiService.subscribeSoundStartEventHandler((event) => {
-      this.onSoundStartEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionSoundStartEventHandler((event) => {
+      this.onRecognitionSoundStartEventHander(event)
     });
-    this.webSpeechApiService.subscribeSpeechStartEventHandler((event) => {
-      this.onSpeechStartEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionSpeechStartEventHandler((event) => {
+      this.onRecognitionSpeechStartEventHander(event)
     });
-    this.webSpeechApiService.subscribeSpeechEndEventHandler((event) => {
-      this.onSpeechEndEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionSpeechEndEventHandler((event) => {
+      this.onRecognitionSpeechEndEventHander(event)
     });
-    this.webSpeechApiService.subscribeSoundEndEventHandler((event) => {
-      this.onSoundEndEventHander(event)
+    this.webSpeechApiService.subscribeRecognitionSoundEndEventHandler((event) => {
+      this.onRecognitionSoundEndEventHander(event)
     });
     
+    this.webSpeechApiService.subscribeSynthesisBoundaryEventHandler((event) => {
+      this.onSynthesisBoundaryEventHandler(event)
+    });
+    this.webSpeechApiService.subscribeSynthesisEndEventHandler((event) => {
+      this.onSynthesisEndEventHandler(event)
+    });
+    this.webSpeechApiService.subscribeSynthesisErrorEventHandler((event) => {
+      this.onSynthesisErrorEventHandler(event)
+    });
+    this.webSpeechApiService.subscribeSynthesisMarkEventHandler((event) => {
+      this.onSynthesisMarkEventHandler(event)
+    });
+    this.webSpeechApiService.subscribeSynthesisPauseEventHandler((event) => {
+      this.onSynthesisPauseEventHandler(event)
+    });
+    this.webSpeechApiService.subscribeSynthesisResumeEventHandler((event) => {
+      this.onSynthesisResumeEventHandler(event)
+    });
+    this.webSpeechApiService.subscribeSynthesisStartEventHandler((event) => {
+      this.onSynthesisStartEventHandler(event)
+    });
   }
   
   ngOnInit() {
     
   }
   
-  start() {
+  startRecognation() {
     this.startTimeout();
-    this.webSpeechApiService.start();
-    this.model.isProcessing = true;
-    this.isProcessingChange.next(this.model);
+    this.webSpeechApiService.startRecognition();
+    this.model.isRecognitionProcessing = true;
+    this.isRecognitionProcessingChange.next(this.model);
   }
   
-  stop() {
+  stopRecognation() {
     this.stopTimeout();
-    this.webSpeechApiService.stop();
-    this.model.isProcessing = false;
-    this.isProcessingChange.next(this.model);
+    this.webSpeechApiService.stopRecognition();
+    this.model.isRecognitionProcessing = false;
+    this.isRecognitionProcessingChange.next(this.model);
   }
   
-  onClickButton(event: Event): void {
+  onClickRecognationButton(event: Event): void {
     event.preventDefault();
-    if(!this.model.isProcessing) {
-      this.start();
+    if(!this.model.isRecognitionProcessing) {
+      this.startRecognation();
     } else {
-      this.stop();
+      this.stopRecognation();
     }
   }
   
-  onStartEventHander(event: Event): void {
-    console.log("start");
+  onRecognitionStartEventHander(event: Event): void {
+    console.log("start recognition");
     this.model.result = new WebSpeechApiResultModel([], false);
     this.resultChange.next(this.model);
-    this.model.isProcessing = true;
-    this.isProcessingChange.next(this.model);
+    this.model.isRecognitionProcessing = true;
+    this.isRecognitionProcessingChange.next(this.model);
   }
   
-  onEndEventHander(event: Event): void {
-    console.log("end");
-    this.model.isProcessing = false;
-    this.isProcessingChange.next(this.model);
+  onRecognitionEndEventHander(event: Event): void {
+    console.log("end recognition");
+    this.model.isRecognitionProcessing = false;
+    this.isRecognitionProcessingChange.next(this.model);
   }
   
-  onErrorEventHander(event: SpeechRecognitionError): void {
-    console.log("error");
+  onRecognitionErrorEventHander(event: SpeechRecognitionError): void {
+    console.log("error recognition");
     this.model.result = new WebSpeechApiResultModel([], false);
     this.resultChange.next(this.model);
-    this.model.isProcessing = false;
-    this.isProcessingChange.next(this.model);
+    this.model.isRecognitionProcessing = false;
+    this.isRecognitionProcessingChange.next(this.model);
   }
   
-  onResultEventHander(event: SpeechRecognitionEvent): void {
+  onRecognitionResultEventHander(event: SpeechRecognitionEvent): void {
     this.stopTimeout();
     this.startTimeout();
     
@@ -128,29 +152,29 @@ export class WebSpeechApiComponent implements OnInit {
     // }
   }
   
-  onNoMatchEventHander(event: SpeechRecognitionEvent): void {
-    console.log("nomatch");
+  onRecognitionNoMatchEventHander(event: SpeechRecognitionEvent): void {
+    console.log("nomatch recognition");
   }
   
-  onAudioStartEventHander(event: Event): void {
-    console.log("audiostart");
+  onRecognitionAudioStartEventHander(event: Event): void {
+    console.log("audiostart recognition");
   }
   
-  onSoundStartEventHander(event: Event): void {
-    console.log("soundstart");
+  onRecognitionSoundStartEventHander(event: Event): void {
+    console.log("soundstart recognition");
   }
   
-  onSpeechStartEventHander(event: Event): void {
-    console.log("speechstart");
+  onRecognitionSpeechStartEventHander(event: Event): void {
+    console.log("speechstart recognition");
   }
   
-  onSpeechEndEventHander(event: Event): void {
-    console.log("speechend");
+  onRecognitionSpeechEndEventHander(event: Event): void {
+    console.log("speechend recognition");
     this.makeLastResult();
   }
   
-  onSoundEndEventHander(event: Event): void {
-    console.log("soundend");
+  onRecognitionSoundEndEventHander(event: Event): void {
+    console.log("soundend recognition");
   }
   
   makeLastResult(): void {
@@ -163,12 +187,71 @@ export class WebSpeechApiComponent implements OnInit {
     console.log("start timeout");
     this.timeoutId = setTimeout(() => {
       console.log("run timeout");
-      this.stop();
+      this.stopRecognation();
     }, 3000);
   }
   
   private stopTimeout() {
     console.log("stop timeout");
     clearTimeout(this.timeoutId);
+  }
+  
+  
+  
+  
+  
+  
+  speakSynthesis(text: string): void {
+    this.webSpeechApiService.speakSynthesis(text);
+    this.model.isSynthesisProcessing = true;
+    this.isSynthesisProcessingChange.next(this.model);
+    
+  }
+  
+  cancelSynthesis(): void {
+    this.webSpeechApiService.cancelSynthesis();
+    this.model.isSynthesisProcessing = false;
+    this.isSynthesisProcessingChange.next(this.model);
+  }
+  
+  onClickSynthesisButton(event: Event): void {
+    event.preventDefault();
+    if(!this.model.isSynthesisProcessing) {
+      this.speakSynthesis(this.model.sample);
+    } else {
+      this.cancelSynthesis();
+    }
+  }
+  
+  onSynthesisBoundaryEventHandler(event: SpeechSynthesisEvent): void {
+    console.log("boundary synthesis");
+  }
+  
+  onSynthesisEndEventHandler(event: SpeechSynthesisEvent): void {
+    console.log("end synthesis");
+    this.model.isSynthesisProcessing = false;
+    this.isSynthesisProcessingChange.next(this.model);
+  }
+  
+  onSynthesisErrorEventHandler(event: SpeechSynthesisErrorEvent): void {
+    console.log("error synthesis");
+    this.model.isSynthesisProcessing = false;
+    this.isSynthesisProcessingChange.next(this.model);
+  }
+  
+  onSynthesisMarkEventHandler(event: SpeechSynthesisEvent): void {
+    console.log("mark synthesis");
+  }
+  
+  onSynthesisPauseEventHandler(event: SpeechSynthesisEvent): void {
+    console.log("pause synthesis");
+  }
+  
+  onSynthesisResumeEventHandler(event: SpeechSynthesisEvent): void {
+    console.log("resume synthesis");
+  }
+  
+  onSynthesisStartEventHandler(event: SpeechSynthesisEvent): void {
+    console.log("start synthesis");
   }
 }

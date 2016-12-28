@@ -1,4 +1,8 @@
-<button [ngClass]="{'recognition-on': model.isProcessing}"
-        (click)="onClickButton($event)">
+<button [ngClass]="{'synthesis-on': model.isSynthesisProcessing}"
+        (click)="onClickSynthesisButton($event)">
+  <img src="assets/icon/volume.jpg">
+</button>
+<button [ngClass]="{'recognition-on': model.isRecognitionProcessing}"
+        (click)="onClickRecognationButton($event)">
   <img src="assets/icon/mic.gif">
 </button>

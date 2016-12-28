@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Platform} from 'ionic-angular';
-import {StatusBar, Splashscreen} from 'ionic-native';
+import {StatusBar, Splashscreen, TextToSpeech} from 'ionic-native';
 import {TabsPage} from "../pages/tabs/tabs";
 
 @Component({
@@ -12,13 +12,14 @@ export class MyApp {
   constructor(platform: Platform) {
     platform.ready()
             .then(() => {
-              // Okay, so the platform is ready and our plugins are available.
-              // Here you can do any higher level native things you might need.
-              StatusBar.styleDefault();
-              Splashscreen.hide();
-      
-              // let recognition: SpeechRecognition = new webkitSpeechRecognition();
-              // recognition.start();
+                // Okay, so the platform is ready and our plugins are available.
+                // Here you can do any higher level native things you might need.
+                StatusBar.styleDefault();
+                Splashscreen.hide();
+        
+                TextToSpeech.speak('Is there anybody in this room?')
+                            .then(() => console.log('Success'))
+                            .catch((reason: any) => console.log(reason));
       
             });
   }

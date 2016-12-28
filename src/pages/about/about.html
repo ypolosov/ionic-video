@@ -8,4 +8,59 @@
 
 <ion-content padding>
 
+  <div>
+
+  <vg-player (onPlayerReady)="onPlayerReady($event)">
+  <vg-overlay-play></vg-overlay-play>
+
+  <vg-controls *ngIf="!controls" [vgAutohide]="false" [vgAutohideTime]="1.5">
+  <vg-play-pause></vg-play-pause>
+  <vg-playback-button></vg-playback-button>
+
+  <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+  <vg-scrub-bar>
+  <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+  <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+  </vg-scrub-bar>
+
+  <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+  <vg-track-selector></vg-track-selector>
+  <vg-mute></vg-mute>
+
+  <vg-fullscreen></vg-fullscreen>
+  </vg-controls>
+
+  <video vgMedia id="singleVideo" preload="auto" [controls]="controls" crossorigin>
+  <source *ngFor="let video of sources" [src]="video.src" [type]="video.type">
+  <track #subtitleTrack
+  kind="subtitles"
+  label="English"
+  src="assets/movie/pale-blue-dot.vtt"
+  srclang="en"
+  default
+  vgCuePoints
+  (onEnterCuePoint)="onEnterCuePoint($event)"
+  (onExitCuePoint)="onExitCuePoint($event)">
+  </video>
+  </vg-player>
+
+  </div>
+
+  <div class="ver-scroll">
+  <div>
+  <ul class="menu">
+  <li *ngFor="let cue of subtitleTrack.cues"
+  (click)="onCueClick(cue)">
+  <div class="start-time">{{cue.startTime}}</div>
+  <div>:</div>
+  <div class="end-time">{{cue.endTime}}</div>
+  <div>-</div>
+  <div class="text">{{cue.text}}</div>
+  </li>
+  </ul>
+  </div>
+  </div>
+
 </ion-content>

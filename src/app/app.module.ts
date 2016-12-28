@@ -5,16 +5,13 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-// import {VgCoreModule} from "videogular2/core";
-// import {VgOverlayPlayModule} from "videogular2/overlay-play";
-// import {VgControlsModule} from "videogular2/controls";
+import {VgCoreModule} from "videogular2/core";
+import {VgOverlayPlayModule} from "videogular2/overlay-play";
+import {VgControlsModule} from "videogular2/controls";
 // import {FormsModule} from "@angular/forms";
 // import {CommonModule} from "@angular/common";
 import {WebSpeechApiModule} from "../web-speech-api";
 import {TextRecognizerModule} from "../text-recognizer";
-
-// import {RecognizedWordModule} from "../recognized-word";
-// import {RecognizedSentenceModule} from "../recognized-sentence";
 
 @NgModule({
   declarations: [
@@ -27,14 +24,12 @@ import {TextRecognizerModule} from "../text-recognizer";
   imports: [
     // CommonModule,
     // FormsModule,
-    // VgCoreModule,
-    // VgControlsModule,
-    // VgOverlayPlayModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
     IonicModule.forRoot(MyApp),
     WebSpeechApiModule,
-    TextRecognizerModule,
-    // RecognizedSentenceModule,
-    // RecognizedWordModule
+    TextRecognizerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

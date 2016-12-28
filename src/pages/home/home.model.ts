@@ -10,8 +10,9 @@ export class HomeModel {
   }
   
   static create(sample: string): HomeModel {
-    return new HomeModel(new WebSpeechApiModel(),
-      new TextRecognizerModel(),
+    return new HomeModel(
+      WebSpeechApiModel.create(sample),
+      TextRecognizerModel.create(sample, "", false),
       sample
     );
   }
