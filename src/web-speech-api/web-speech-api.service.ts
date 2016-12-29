@@ -1,11 +1,14 @@
 import {Injectable} from '@angular/core';
 import {WebSpeechApi} from "./web-speech-api";
 import {Observable} from "rxjs";
+import {TextToSpeech, TTSOptions} from 'ionic-native';
 
 @Injectable()
 export class WebSpeechApiService implements WebSpeechApi {
   
-  private recognition: SpeechRecognition = new webkitSpeechRecognition();
+  private recognition: SpeechRecognition = window['webkitSpeechRecognition']
+    ? new webkitSpeechRecognition()
+    : new SpeechRecognition();
   
   private startRecognitionSource: Observable<Event> = Observable.fromEvent(this.recognition, 'start');
   private endRecognitionSource: Observable<Event> = Observable.fromEvent(this.recognition, 'end');
@@ -17,7 +20,6 @@ export class WebSpeechApiService implements WebSpeechApi {
   private speechStartRecognitionSource: Observable<Event> = Observable.fromEvent(this.recognition, 'speechstart');
   private speechEndRecognitionSource: Observable<Event> = Observable.fromEvent(this.recognition, 'speechend');
   private soundEndRecognitionSource: Observable<Event> = Observable.fromEvent(this.recognition, 'soundend');
-  
   
   private synthesis: SpeechSynthesis = speechSynthesis;
   
@@ -31,8 +33,6 @@ export class WebSpeechApiService implements WebSpeechApi {
   private resumeSynthesisSource: Observable<SpeechSynthesisEvent> = Observable.fromEvent(this.utterance, 'resume');
   private pauseSynthesisSource: Observable<SpeechSynthesisEvent> = Observable.fromEvent(this.utterance, 'pause');
   
-  
-  
   constructor() {
     // let grammar = '#JSGF V1.0; grammar phrase; public <phrase> = is there anybody in this room;';
     // let speechRecognitionList: SpeechGrammarList = new webkitSpeechGrammarList();
@@ -43,12 +43,13 @@ export class WebSpeechApiService implements WebSpeechApi {
     this.recognition.interimResults = true;
     this.recognition.maxAlternatives = 1;
     // this.recognition.serviceURI = '';
-  
-  
+    
     this.utterance.lang = 'en-GB';
     this.utterance.volume = 1;
     let voices: Array<SpeechSynthesisVoice> = this.getVoicesSynthesis();
-    this.utterance.voice = voices.filter((voice: SpeechSynthesisVoice) =>{return voice.lang == 'en-GB'})[0];
+    this.utterance.voice = voices.filter((voice: SpeechSynthesisVoice) => {
+      return voice.lang == 'en-GB'
+    })[0];
     this.utterance.pitch = 1;
     this.utterance.rate = 1;
     this.utterance.text = "";
@@ -117,66 +118,75 @@ export class WebSpeechApiService implements WebSpeechApi {
     this.soundEndRecognitionSource.subscribe(handler);
   }
   
-  
-  
   speakSynthesis(text: string): void {
-    this.utterance.text = text;
-    this.synthesis.speak(this.utterance);
+    if(TextToSpeech) {
+      TextToSpeech.speak({text: text, locale: 'en-GB', rate: 1} as TTSOptions)
+                  .then(() => console.log('Success'))
+                  .catch((reason: any) => console.log(reason));
+    } else {
+      this.utterance.text = text;
+      this.synthesis.speak(this.utterance);
+    }
   }
   
-  pauseSynthesis(): void{
+  pauseSynthesis(): void {
     this.synthesis.pause();
   }
   
-  resumeSynthesis(): void{
+  resumeSynthesis(): void {
     this.synthesis.resume();
   }
   
-  cancelSynthesis(): void{
+  cancelSynthesis(): void {
     this.synthesis.cancel();
   }
   
-  getVoicesSynthesis(): Array<SpeechSynthesisVoice>{
+  getVoicesSynthesis(): Array<SpeechSynthesisVoice> {
     return this.synthesis.getVoices();
   }
   
-  pausedSynthesis(): boolean{
+  pausedSynthesis(): boolean {
     return this.synthesis.paused;
   }
   
-  pendingSynthesis(): boolean{
+  pendingSynthesis(): boolean {
     return this.synthesis.pending;
   }
   
-  speakingSynthesis(): boolean{
+  speakingSynthesis(): boolean {
     return this.synthesis.speaking;
   }
-  
   
   subscribeSynthesisStartEventHandler(
     handler: (event: SpeechSynthesisEvent) => void): void {
     this.startSynthesisSource.subscribe(handler);
   }
+  
   subscribeSynthesisEndEventHandler(
     handler: (event: SpeechSynthesisEvent) => void): void {
     this.endSynthesisSource.subscribe(handler);
   }
+  
   subscribeSynthesisErrorEventHandler(
     handler: (event: SpeechSynthesisErrorEvent) => void): void {
     this.errorSynthesisSource.subscribe(handler);
   }
+  
   subscribeSynthesisBoundaryEventHandler(
     handler: (event: SpeechSynthesisEvent) => void): void {
     this.boundarySynthesisSource.subscribe(handler);
   }
+  
   subscribeSynthesisMarkEventHandler(
     handler: (event: SpeechSynthesisEvent) => void): void {
     this.markSynthesisSource.subscribe(handler);
   }
+  
   subscribeSynthesisResumeEventHandler(
     handler: (event: SpeechSynthesisEvent) => void): void {
     this.resumeSynthesisSource.subscribe(handler);
   }
+  
   subscribeSynthesisPauseEventHandler(
     handler: (event: SpeechSynthesisEvent) => void): void {
     this.pauseSynthesisSource.subscribe(handler);

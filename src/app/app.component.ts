@@ -16,10 +16,6 @@ export class MyApp {
                 // Here you can do any higher level native things you might need.
                 StatusBar.styleDefault();
                 Splashscreen.hide();
-        
-                TextToSpeech.speak('Is there anybody in this room?')
-                            .then(() => console.log('Success'))
-                            .catch((reason: any) => console.log(reason));
       
             });
   }
