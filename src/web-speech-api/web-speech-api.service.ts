@@ -119,14 +119,8 @@ export class WebSpeechApiService implements WebSpeechApi {
   }
   
   speakSynthesis(text: string): void {
-    if(TextToSpeech) {
-      TextToSpeech.speak({text: text, locale: 'en-GB', rate: 1} as TTSOptions)
-                  .then(() => console.log('Success'))
-                  .catch((reason: any) => console.log(reason));
-    } else {
-      this.utterance.text = text;
-      this.synthesis.speak(this.utterance);
-    }
+    this.utterance.text = text;
+    this.synthesis.speak(this.utterance);
   }
   
   pauseSynthesis(): void {

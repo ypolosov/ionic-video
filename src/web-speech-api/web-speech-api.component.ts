@@ -2,6 +2,7 @@ import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {WebSpeechApiService} from "./web-speech-api.service";
 import {WebSpeechApiModel} from "./web-speech-api.model";
 import {WebSpeechApiResultModel} from "./web-speech-api-result.model";
+import {TextToSpeech, TTSOptions} from 'ionic-native';
 
 @Component({
              selector: 'web-speech-api',
@@ -196,20 +197,37 @@ export class WebSpeechApiComponent implements OnInit {
     clearTimeout(this.timeoutId);
   }
   
-  
-  
-  
-  
-  
   speakSynthesis(text: string): void {
-    this.webSpeechApiService.speakSynthesis(text);
+    if(this.isTTSAvailable()) {
+      this.onTTSSpeakStartEventHandler();
+      TextToSpeech.speak({
+                           text: text,
+                           locale: 'en-GB',
+                           rate: 1
+                         } as TTSOptions)
+                  .then(() => this.onTTSSpeakEndEventHandler())
+                  .catch((reason) => this.onTTSSpeakErrorEventHandler(reason));
+    } else {
+      this.webSpeechApiService.speakSynthesis(text);
+    }
     this.model.isSynthesisProcessing = true;
     this.isSynthesisProcessingChange.next(this.model);
     
   }
   
   cancelSynthesis(): void {
-    this.webSpeechApiService.cancelSynthesis();
+    if(this.isTTSAvailable()) {
+      // this.onTTSSpeakCancelEventHandler();
+      TextToSpeech.speak({
+                           text: "",
+                           locale: 'en-GB',
+                           rate: 1
+                         } as TTSOptions)
+                  .then(() => this.onTTSSpeakEndEventHandler())
+                  .catch((reason) => this.onTTSSpeakErrorEventHandler(reason));
+    } else {
+      this.webSpeechApiService.cancelSynthesis();
+    }
     this.model.isSynthesisProcessing = false;
     this.isSynthesisProcessingChange.next(this.model);
   }
@@ -253,5 +271,30 @@ export class WebSpeechApiComponent implements OnInit {
   
   onSynthesisStartEventHandler(event: SpeechSynthesisEvent): void {
     console.log("start synthesis");
+  }
+  
+  
+  isTTSAvailable(): boolean{
+    return (window as any).cordova && !!TextToSpeech;
+  }
+  
+  onTTSSpeakStartEventHandler(): void {
+    console.log('speak start tts');
+  }
+  
+  onTTSSpeakEndEventHandler(): void {
+    console.log('speak end tts');
+    this.model.isSynthesisProcessing = false;
+    this.isSynthesisProcessingChange.next(this.model);
+  }
+  
+  // onTTSSpeakCancelEventHandler(): void {
+  //   console.log('speak cancel tts');
+  // }
+  
+  onTTSSpeakErrorEventHandler(reason: any): void {
+    console.log('speak error tts');
+    this.model.isSynthesisProcessing = false;
+    this.isSynthesisProcessingChange.next(this.model);
   }
 }

@@ -16,6 +16,11 @@ export class MyApp {
                 // Here you can do any higher level native things you might need.
                 StatusBar.styleDefault();
                 Splashscreen.hide();
+                if((window as any).cordova && TextToSpeech){
+                  console.log("There's a TextToSpeech plugin!");
+                }else{
+                  console.log("There isn't a TextToSpeech plugin!");
+                }
       
             });
   }
